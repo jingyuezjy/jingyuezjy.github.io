@@ -1,8 +1,8 @@
 Jingyue Zhang - Website publishing guide
 ======================================
 
-正式网址：https://jingyue2000.github.io/
-仓库：https://github.com/JingYue2000/JingYue2000.github.io
+正式网址：https://jingyuezjy.github.io/
+仓库：https://github.com/jingyuezjy/jingyuezjy.github.io
 
 当前使用手动发布。修改本地文件、Commit 或 Push 都不会自动发布网站。
 CV/ 和 image/ 留在本地，不会上传；网站头像使用 public/portrait.jpg。
@@ -12,14 +12,14 @@ CV/ 和 image/ 留在本地，不会上传；网站头像使用 public/portrait.
 1. 在 WebStorm 编辑网站，运行 npm run dev，在 http://localhost:3000/ 预览。
 2. 在 WebStorm 的 Git 面板 Commit 修改，再 Push 到 main。
 3. 打开：
-   https://github.com/JingYue2000/JingYue2000.github.io/actions/workflows/deploy.yml
+   https://github.com/jingyuezjy/jingyuezjy.github.io/actions/workflows/deploy.yml
 4. 点击 Run workflow，Branch 选 main，再点绿色 Run workflow。
 5. 等待 build 和 deploy 都显示绿色，再刷新正式网址。
 
 下线网站（保留代码）
 --------------------
 1. 打开：
-   https://github.com/JingYue2000/JingYue2000.github.io/settings/pages
+   https://github.com/jingyuezjy/jingyuezjy.github.io/settings/pages
 2. 在 “Your site is live at...” 旁点击 ... 菜单，选择 Unpublish site。
 3. 若仍有正在运行的 Publish website 任务，先在 Actions 中取消该任务，
    等任务停止后再 Unpublish，以免它随后重新发布。
