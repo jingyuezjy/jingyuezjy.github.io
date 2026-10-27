@@ -1,6 +1,6 @@
 type = "card"
 title = "Academic Service"
-description = "Conference peer review."
+description = "Conference peer review and volunteering."
 
 [[items]]
 title = "Reviewer"
@@ -18,4 +18,16 @@ content = ""
 title = "Reviewer"
 subtitle = "ACM DIS"
 date = "2026"
+content = ""
+
+[[items]]
+title = "Student Volunteer"
+subtitle = "ACM UIST"
+date = "2024"
+content = ""
+
+[[items]]
+title = "Student Volunteer"
+subtitle = "ACM CHI"
+date = "2025"
 content = ""
