@@ -26,11 +26,12 @@ id = "ongoing_projects"
 type = "projects"
 source = "projects.md"
 
-[[sections]]
-id = "news"
-type = "list"
-title = "News"
-source = "news.toml"
+# News is temporarily hidden; uncomment this block to restore it.
+# [[sections]]
+# id = "news"
+# type = "list"
+# title = "News"
+# source = "news.toml"
 
 [[sections]]
 id = "awards"
