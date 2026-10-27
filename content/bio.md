@@ -1,5 +1,3 @@
-I am a PhD student at the School of Science, University of Example, advised by [Prof. Advisor One](https://example.com) and [Dr. Advisor Two](https://example.com).
+I am a PhD student in Computer Science at **Université de Montréal**, working with [**Damien Masson**](https://damienmasson.com/) and [**Ian Arawjo**](https://ianarawjo.com/index.html). I am part of the [**Montréal HCI Group**](https://hci.iro.umontreal.ca/) and [**Mila – Quebec AI Institute**](https://mila.quebec/en).
 
-Prior to this, I obtained a BSc degree with First Class Honours in Natural Science from the University of Example.
-
-My current research focuses on investigating the mathematical principles of natural philosophy.
+I am interested in how interactive systems can help people interact with and evaluate AI systems. My interests include agent evaluation and auditing, tools for inspecting agent traces and planning evaluations at scale, and dynamic, user-defined abstractions that evolve with people's ideas.

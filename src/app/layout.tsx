@@ -1,7 +1,6 @@
 import type { Metadata } from 'next';
 import './globals.css';
 import Navigation from '@/components/layout/Navigation';
-import Footer from '@/components/layout/Footer';
 import { ThemeProvider } from '@/components/ui/ThemeProvider';
 import { LocaleProvider } from '@/components/ui/LocaleProvider';
 import { getConfig } from '@/lib/config';
@@ -24,7 +23,7 @@ export async function generateMetadata(): Promise<Metadata> {
     creator: config.author.name,
     publisher: config.author.name,
     icons: {
-      icon: config.site.favicon,
+      icon: config.site.favicon || 'data:,',
     },
     openGraph: {
       type: 'website',
@@ -93,23 +92,19 @@ function buildLocalizedConfigMaps(
 ): {
   navigationByLocale: Record<string, SiteConfig['navigation']>;
   siteTitleByLocale: Record<string, string>;
-  lastUpdatedByLocale: Record<string, string | undefined>;
 } {
   const navigationByLocale: Record<string, SiteConfig['navigation']> = {};
   const siteTitleByLocale: Record<string, string> = {};
-  const lastUpdatedByLocale: Record<string, string | undefined> = {};
 
   for (const locale of locales) {
     const localizedConfig = getConfig(locale);
     navigationByLocale[locale] = localizedConfig.navigation;
     siteTitleByLocale[locale] = localizedConfig.site.title;
-    lastUpdatedByLocale[locale] = localizedConfig.site.last_updated;
   }
 
   return {
     navigationByLocale,
     siteTitleByLocale,
-    lastUpdatedByLocale,
   };
 }
 
@@ -125,22 +120,11 @@ export default function RootLayout({
   const {
     navigationByLocale,
     siteTitleByLocale,
-    lastUpdatedByLocale,
   } = buildLocalizedConfigMaps(targetLocales);
 
   return (
     <html lang={runtimeI18n.defaultLocale} className="scroll-smooth" suppressHydrationWarning>
       <head>
-        <link rel="icon" href={config.site.favicon} type="image/svg+xml" />
-        <link rel="dns-prefetch" href="https://jialeliu.com" />
-        <link rel="preconnect" href="https://jialeliu.com" crossOrigin="" />
-        <link
-          rel="preload"
-          as="font"
-          type="font/woff2"
-          href="https://jialeliu.com/fonts/georgiab.woff2"
-          crossOrigin=""
-        />
         <script
           dangerouslySetInnerHTML={{
             __html: `
@@ -181,11 +165,6 @@ export default function RootLayout({
             <main className="min-h-screen pt-16 lg:pt-20">
               {children}
             </main>
-            <Footer
-              lastUpdated={config.site.last_updated}
-              lastUpdatedByLocale={lastUpdatedByLocale}
-              defaultLocale={runtimeI18n.defaultLocale}
-            />
           </LocaleProvider>
         </ThemeProvider>
       </body>

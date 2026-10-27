@@ -8,7 +8,7 @@ import { getRuntimeI18nConfig } from '@/lib/i18n/config';
 
 interface SectionConfig {
   id: string;
-  type: 'markdown' | 'publications' | 'list';
+  type: 'markdown' | 'publications' | 'projects' | 'list';
   title?: string;
   source?: string;
   filter?: string;
@@ -33,6 +33,7 @@ function processSections(sections: SectionConfig[], locale?: string): SectionCon
   return sections.map((section: SectionConfig) => {
     switch (section.type) {
       case 'markdown':
+      case 'projects':
         return {
           ...section,
           content: section.source ? getMarkdownContent(section.source, locale) : '',

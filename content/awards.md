@@ -1,0 +1,3 @@
+- DIRO Excellence Scholarship, Université de Montréal (2025, 2026)
+- DIRO Outreach Scholarship, Université de Montréal (2024, 2025)
+- Outstanding Graduate Award, Xi’an Jiaotong University (2022)

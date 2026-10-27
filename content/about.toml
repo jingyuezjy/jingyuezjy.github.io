@@ -3,9 +3,9 @@ title = "About"
 
 [profile]
 research_interests = [
-  "Computational Physics",
-  "Mathematical Principles",
-  "Proof of Theorems"
+  "Human–AI Interaction",
+  "Agent Evaluation & Auditing",
+  "Dynamic & User-Defined Abstractions"
 ]
 
 [[sections]]
@@ -19,11 +19,28 @@ id = "featured_publications"
 type = "publications"
 title = "Selected Publications"
 filter = "selected"
-limit = 5
+limit = 2
+
+[[sections]]
+id = "ongoing_projects"
+type = "projects"
+source = "projects.md"
 
 [[sections]]
 id = "news"
 type = "list"
 title = "News"
 source = "news.toml"
+
+[[sections]]
+id = "awards"
+type = "markdown"
+source = "awards.md"
+title = "Awards"
+
+[[sections]]
+id = "services"
+type = "markdown"
+source = "services.md"
+title = "Academic Service"
 

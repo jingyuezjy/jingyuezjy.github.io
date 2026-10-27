@@ -1,27 +1,18 @@
 type = "card"
 title = "Awards"
-description = "Honors and awards I have received."
+description = "Selected honors and awards."
 
 [[items]]
-title = "Example Award"
-subtitle = "Organization"
-date = "2025"
-content = "Description of the award."
+title = "DIRO Excellence Scholarship"
+subtitle = "Université de Montréal"
+date = "2025, 2026"
 
 [[items]]
-title = "Example Award"
-subtitle = "Organization"
-date = "2024"
-content = "Description of the award."
+title = "DIRO Outreach Scholarship"
+subtitle = "Université de Montréal"
+date = "2024, 2025"
 
 [[items]]
-title = "Example Award"
-subtitle = "Organization"
-date = "2023"
-content = "Description of the award."
-
-[[items]]
-title = "Example Award"
-subtitle = "Organization"
+title = "Outstanding Graduate Award"
+subtitle = "Xi’an Jiaotong University"
 date = "2022"
-content = "Description of the award."

@@ -3,6 +3,7 @@
 import Profile from '@/components/home/Profile';
 import About from '@/components/home/About';
 import SelectedPublications from '@/components/home/SelectedPublications';
+import OngoingProjects from '@/components/home/OngoingProjects';
 import News, { NewsItem } from '@/components/home/News';
 import PublicationsList from '@/components/publications/PublicationsList';
 import TextPage from '@/components/pages/TextPage';
@@ -14,7 +15,7 @@ import { useLocaleStore } from '@/lib/stores/localeStore';
 
 interface SectionConfig {
   id: string;
-  type: 'markdown' | 'publications' | 'list';
+  type: 'markdown' | 'publications' | 'projects' | 'list';
   title?: string;
   source?: string;
   filter?: string;
@@ -85,6 +86,14 @@ export default function HomePageClient({ dataByLocale, defaultLocale }: HomePage
                         publications={section.publications || []}
                         title={section.title}
                         enableOnePageMode={data.enableOnePageMode}
+                      />
+                    );
+                  case 'projects':
+                    return (
+                      <OngoingProjects
+                        key={section.id}
+                        content={section.content || ''}
+                        title={section.title}
                       />
                     );
                   case 'list':

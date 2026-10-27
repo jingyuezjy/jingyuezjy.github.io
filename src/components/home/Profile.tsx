@@ -112,13 +112,15 @@ export default function Profile({ author, social, features, researchInterests }:
             className="sticky top-8"
         >
             {/* Profile Image */}
-            <div className="w-64 h-64 mx-auto mb-6 rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-105">
+            <div className="relative w-64 h-64 mx-auto mb-6 overflow-hidden shadow-lg">
                 <Image
                     src={author.avatar}
                     alt={author.name}
-                    width={256}
-                    height={256}
-                    className="w-full h-full object-cover object-[32%_center]"
+                    width={1833}
+                    height={3024}
+                    className="absolute h-auto max-w-none"
+                    // Use the full photo width with a square crop starting 80px from the top.
+                    style={{ width: '100%', left: 0, top: '-4.36%' }}
                     priority
                 />
             </div>

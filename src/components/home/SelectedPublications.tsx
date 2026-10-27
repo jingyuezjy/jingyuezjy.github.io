@@ -32,17 +32,27 @@ export default function SelectedPublications({ publications, title, enableOnePag
                     {messages.home.viewAll} →
                 </Link>
             </div>
-            <div className="space-y-4">
+            <div className="space-y-6">
                 {publications.map((pub, index) => (
                     <motion.div
                         key={pub.id}
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.4, delay: 0.1 * index }}
-                        className="bg-neutral-50 dark:bg-neutral-800 p-4 rounded-lg shadow-sm border border-neutral-200 dark:border-[rgba(148,163,184,0.24)] hover:shadow-lg transition-all duration-200 hover:scale-[1.02]"
                     >
                         <h3 className="font-semibold text-primary mb-2 leading-tight">
-                            <FormattedBibTeXText nodes={pub.titleNodes} fallback={pub.title} />
+                            {pub.doi || pub.url ? (
+                                <a
+                                    href={pub.doi ? `https://doi.org/${pub.doi}` : pub.url}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="hover:text-accent-dark transition-colors"
+                                >
+                                    <FormattedBibTeXText nodes={pub.titleNodes} fallback={pub.title} />
+                                </a>
+                            ) : (
+                                <FormattedBibTeXText nodes={pub.titleNodes} fallback={pub.title} />
+                            )}
                         </h3>
                         <p className="text-sm text-neutral-600 dark:text-neutral-500 mb-1">
                             {pub.authors.map((author, idx) => (
@@ -61,9 +71,33 @@ export default function SelectedPublications({ publications, title, enableOnePag
                             {pub.journal || pub.conference}
                         </p>
                         {pub.description && (
-                            <p className="text-sm text-neutral-500 dark:text-neutral-500 line-clamp-2">
+                            <p className="text-sm text-neutral-600 dark:text-neutral-500 leading-relaxed">
                                 {pub.description}
                             </p>
+                        )}
+                        {(pub.code || pub.docs) && (
+                            <div className="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-sm">
+                                {pub.code && (
+                                    <a
+                                        href={pub.code}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="font-medium text-accent underline underline-offset-4 hover:text-accent-dark"
+                                    >
+                                        Code
+                                    </a>
+                                )}
+                                {pub.docs && (
+                                    <a
+                                        href={pub.docs}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="font-medium text-accent underline underline-offset-4 hover:text-accent-dark"
+                                    >
+                                        Website
+                                    </a>
+                                )}
+                            </div>
                         )}
                     </motion.div>
                 ))}

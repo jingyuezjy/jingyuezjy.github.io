@@ -1,0 +1,40 @@
+Jingyue Zhang - Website publishing guide
+======================================
+
+正式网址：https://jingyue2000.github.io/
+仓库：https://github.com/JingYue2000/JingYue2000.github.io
+
+当前使用手动发布。修改本地文件、Commit 或 Push 都不会自动发布网站。
+CV/ 和 image/ 留在本地，不会上传；网站头像使用 public/portrait.jpg。
+
+更新网站
+--------
+1. 在 WebStorm 编辑网站，运行 npm run dev，在 http://localhost:3000/ 预览。
+2. 在 WebStorm 的 Git 面板 Commit 修改，再 Push 到 main。
+3. 打开：
+   https://github.com/JingYue2000/JingYue2000.github.io/actions/workflows/deploy.yml
+4. 点击 Run workflow，Branch 选 main，再点绿色 Run workflow。
+5. 等待 build 和 deploy 都显示绿色，再刷新正式网址。
+
+下线网站（保留代码）
+--------------------
+1. 打开：
+   https://github.com/JingYue2000/JingYue2000.github.io/settings/pages
+2. 在 “Your site is live at...” 旁点击 ... 菜单，选择 Unpublish site。
+3. 若仍有正在运行的 Publish website 任务，先在 Actions 中取消该任务，
+   等任务停止后再 Unpublish，以免它随后重新发布。
+4. 正式网址将停止提供网站。公开仓库中的源代码仍然可见。
+
+重新上线
+--------
+回到上述 Actions 页面，手动运行 Publish website。成功后恢复同一网址。
+不需要重建仓库，也不需要修改 CV 中的网站地址。
+
+说明
+----
+本地开发服务器和正式网站相互独立；关闭 WebStorm 或电脑不会使正式网站下线。
+下线不会撤回其他人已经保存的副本。
+不要把 CV.pdf、申请材料或原始照片复制到 public/，该目录会直接发布到网上。
+
+GitHub 官方说明：
+https://docs.github.com/en/pages/getting-started-with-github-pages/unpublishing-a-github-pages-site

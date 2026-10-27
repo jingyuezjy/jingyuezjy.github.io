@@ -1,10 +1,15 @@
 type = "card"
 title = "Teaching"
-description = "Courses I have taught or assisted with."
+description = "Teaching assistantships at Université de Montréal."
 
 [[items]]
-title = "Example Course"
-subtitle = "Teaching Assistant"
-date = "2024"
-content = "Description of the course and responsibilities. Content of this course can be found [here](https://example.com)."
-tags = ["Undergraduate", "CS"]
+title = "IFT 6077 — Designing Human-AI Interaction"
+subtitle = "Teaching Assistant · Université de Montréal"
+date = "Fall 2026"
+content = "Instructor: Damien Masson.\n\n[Course syllabus](https://docs.google.com/document/d/1UdmhWxgEWxTb_qfwo6U6VSnvaApfFSZWSFUEk5gtiig/edit?tab=t.0)"
+
+[[items]]
+title = "IFT 6135A — Deep Learning"
+subtitle = "Teaching Assistant · Université de Montréal"
+date = "Winter 2026"
+content = "Instructor: Aaron Courville.\n\n[Course website](https://sites.google.com/view/ift6135a-h2026/)"

@@ -23,6 +23,11 @@
 # misc
 .DS_Store
 *.pem
+.idea/
+
+# Local documents and original photos are not published.
+/CV/
+/image/
 
 # debug
 npm-debug.log*
