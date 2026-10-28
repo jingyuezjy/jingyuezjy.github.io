@@ -49,6 +49,7 @@ export default function PublicationsList({ config, publications, embedded = fals
             const matchesSearch =
                 pub.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
                 pub.authors.some(author => author.name.toLowerCase().includes(searchQuery.toLowerCase())) ||
+                (pub.venue && `${pub.venue} ${pub.year}`.toLowerCase().includes(searchQuery.toLowerCase())) ||
                 pub.journal?.toLowerCase().includes(searchQuery.toLowerCase()) ||
                 pub.conference?.toLowerCase().includes(searchQuery.toLowerCase());
 
@@ -231,7 +232,7 @@ export default function PublicationsList({ config, publications, embedded = fals
                                         ))}
                                     </p>
                                     <p className="text-sm font-medium text-neutral-800 dark:text-neutral-600 mb-3">
-                                        {pub.journal || pub.conference} {pub.year}
+                                        {pub.venue || pub.journal || pub.conference} {pub.year}
                                     </p>
 
                                     {pub.description && (

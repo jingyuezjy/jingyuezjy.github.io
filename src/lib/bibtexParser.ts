@@ -81,6 +81,7 @@ export function parseBibTeX(bibtexContent: string, locale?: string): Publication
       // Optional fields
       journal: cleanBibTeXString(tags.journal),
       conference: cleanBibTeXString(tags.booktitle),
+      venue: cleanBibTeXString(tags.venue),
       volume: tags.volume,
       issue: tags.number,
       pages: tags.pages,
@@ -94,7 +95,7 @@ export function parseBibTeX(bibtexContent: string, locale?: string): Publication
       preview,
 
       // Store original BibTeX (excluding custom fields)
-      bibtex: reconstructBibTeX(entry, ['selected', 'preview', 'description', 'keywords', 'code', 'docs']),
+      bibtex: reconstructBibTeX(entry, ['selected', 'preview', 'description', 'keywords', 'code', 'docs', 'venue']),
     };
 
     // Clean up undefined fields
