@@ -3,6 +3,7 @@ import { getPageConfig, getMarkdownContent, getBibtexContent } from '@/lib/conte
 import { getConfig } from '@/lib/config';
 import { parseBibTeX } from '@/lib/bibtexParser';
 import DynamicPageClient, { type DynamicPageLocaleData } from '@/components/pages/DynamicPageClient';
+import HomeSectionRedirect from '@/components/pages/HomeSectionRedirect';
 import {
   BasePageConfig,
   PublicationPageConfig,
@@ -55,7 +56,9 @@ function loadDynamicPageData(slug: string, locale?: string): DynamicPageLocaleDa
 export function generateStaticParams() {
   const config = getConfig();
   return config.navigation
-    .filter((nav) => nav.type === 'page' && nav.target !== 'about')
+    .filter((nav) => nav.target !== 'about' && (
+      nav.type === 'page' || (config.features.enable_one_page_mode && nav.type === 'section')
+    ))
     .map((nav) => ({
       slug: nav.target,
     }));
@@ -79,6 +82,16 @@ export default async function DynamicPage({ params }: { params: Promise<{ slug: 
   const { slug } = await params;
 
   const baseConfig = getConfig();
+  if (baseConfig.features.enable_one_page_mode) {
+    const section = baseConfig.navigation.find((item) =>
+      (item.type === 'page' || item.type === 'section') && item.target === slug
+    );
+    if (!section) {
+      notFound();
+    }
+    return <HomeSectionRedirect target={section.target} title={section.title} />;
+  }
+
   const runtimeI18n = getRuntimeI18nConfig(baseConfig.i18n);
   const targetLocales = runtimeI18n.enabled ? runtimeI18n.locales : [runtimeI18n.defaultLocale];
 

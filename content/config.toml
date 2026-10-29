@@ -14,12 +14,13 @@ avatar = "/portrait.jpg"
 email = "jingyue.zhang@umontreal.ca"
 location = "Montréal, Canada"
 location_details = ["Montréal, Canada"]
+google_scholar = "https://scholar.google.ca/citations?hl=en&user=fCi-jE4AAAAJ"
 github = "https://github.com/jingyuezjy"
 linkedin = "https://www.linkedin.com/in/jingyue-zhang-4a2a91237/"
 
 [features]
 enable_likes = false
-enable_one_page_mode = false
+enable_one_page_mode = true
 
 [i18n]
 enabled = false
@@ -38,12 +39,12 @@ href = "/"
 
 [[navigation]]
 title = "Publications"
-type = "page"
+type = "section"
 target = "publications"
-href = "/publications"
+href = "/#publications"
 
 [[navigation]]
 title = "Teaching"
 type = "page"
 target = "teaching"
-href = "/teaching"
+href = "/#teaching"

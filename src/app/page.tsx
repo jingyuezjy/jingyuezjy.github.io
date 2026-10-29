@@ -46,6 +46,7 @@ function processSections(sections: SectionConfig[], locale?: string): SectionCon
           : allPubs;
         return {
           ...section,
+          content: section.source ? getMarkdownContent(section.source, locale) : '',
           publications: filteredPubs.slice(0, section.limit || 5),
         };
       }

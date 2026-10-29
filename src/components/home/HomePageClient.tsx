@@ -8,6 +8,7 @@ import News, { NewsItem } from '@/components/home/News';
 import PublicationsList from '@/components/publications/PublicationsList';
 import TextPage from '@/components/pages/TextPage';
 import CardPage from '@/components/pages/CardPage';
+import TeachingList from '@/components/home/TeachingList';
 import type { SiteConfig } from '@/lib/config';
 import { Publication } from '@/types/publication';
 import { CardPageConfig, PublicationPageConfig, TextPageConfig } from '@/types/page';
@@ -68,7 +69,11 @@ export default function HomePageClient({ dataByLocale, defaultLocale }: HomePage
 
         <div className="lg:col-span-2 space-y-8">
           {data.pagesToShow.map((page) => (
-            <section key={page.id} id={page.id} className="scroll-mt-24 space-y-8">
+            <section
+              key={page.id}
+              id={page.id}
+              className={`scroll-mt-28 space-y-8 ${page.id === 'teaching' ? 'min-h-[calc(100svh-8rem)]' : ''}`}
+            >
               {page.type === 'about' && page.sections.map((section: SectionConfig) => {
                 switch (section.type) {
                   case 'markdown':
@@ -83,8 +88,11 @@ export default function HomePageClient({ dataByLocale, defaultLocale }: HomePage
                     return (
                       <SelectedPublications
                         key={section.id}
+                        id={section.id}
                         publications={section.publications || []}
                         title={section.title}
+                        projectsContent={section.content}
+                        showViewAll={!data.enableOnePageMode}
                         enableOnePageMode={data.enableOnePageMode}
                       />
                     );
@@ -123,10 +131,11 @@ export default function HomePageClient({ dataByLocale, defaultLocale }: HomePage
                 />
               )}
               {page.type === 'card' && (
-                <CardPage
-                  config={page.config}
-                  embedded={true}
-                />
+                page.id === 'teaching' ? (
+                  <TeachingList config={page.config} />
+                ) : (
+                  <CardPage config={page.config} embedded={true} />
+                )
               )}
             </section>
           ))}

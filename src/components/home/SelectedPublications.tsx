@@ -5,33 +5,46 @@ import Link from 'next/link';
 import { Publication } from '@/types/publication';
 import { useMessages } from '@/lib/i18n/useMessages';
 import FormattedBibTeXText from '@/components/publications/FormattedBibTeXText';
+import OngoingProjects from './OngoingProjects';
 
 interface SelectedPublicationsProps {
+    id?: string;
     publications: Publication[];
     title?: string;
+    projectsContent?: string;
+    showViewAll?: boolean;
     enableOnePageMode?: boolean;
 }
 
-export default function SelectedPublications({ publications, title, enableOnePageMode = false }: SelectedPublicationsProps) {
+export default function SelectedPublications({ id, publications, title, projectsContent, showViewAll = true, enableOnePageMode = false }: SelectedPublicationsProps) {
     const messages = useMessages();
     const resolvedTitle = title || messages.home.selectedPublications;
+    const ViewAllLink = enableOnePageMode ? 'a' : Link;
 
     return (
         <motion.section
+            id={id}
+            className="scroll-mt-28"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.4 }}
         >
             <div className="flex items-center justify-between mb-4">
                 <h2 className="text-2xl font-serif font-bold text-primary">{resolvedTitle}</h2>
-                <Link
-                    href={enableOnePageMode ? "/#publications" : "/publications"}
-                    prefetch={true}
-                    className="text-accent hover:text-accent-dark text-sm font-medium transition-all duration-200 rounded hover:bg-accent/10 hover:shadow-sm"
-                >
-                    {messages.home.viewAll} →
-                </Link>
+                {showViewAll && (
+                    <ViewAllLink
+                        href={enableOnePageMode ? "/#publications" : "/publications"}
+                        className="text-accent hover:text-accent-dark text-sm font-medium transition-all duration-200 rounded hover:bg-accent/10 hover:shadow-sm"
+                    >
+                        {messages.home.viewAll} →
+                    </ViewAllLink>
+                )}
             </div>
+            {projectsContent && (
+                <div className="mb-6">
+                    <OngoingProjects content={projectsContent} />
+                </div>
+            )}
             <div className="space-y-6">
                 {publications.map((pub, index) => (
                     <motion.div

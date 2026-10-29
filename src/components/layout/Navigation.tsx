@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useMemo, useRef, useCallback } from 'react';
+import { useState, useEffect, useMemo, useRef, useCallback, type MouseEvent } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -21,6 +21,10 @@ interface NavigationProps {
   i18n: I18nRuntimeConfig;
   itemsByLocale?: Record<string, SiteConfig['navigation']>;
   siteTitleByLocale?: Record<string, string>;
+}
+
+function isSectionItem(item: SiteConfig['navigation'][number]) {
+  return item.type === 'page' || item.type === 'section';
 }
 
 export default function Navigation({
@@ -45,6 +49,7 @@ export default function Navigation({
     height: number;
   } | null>(null);
   const resolvedLocale = i18n.enabled ? locale : i18n.defaultLocale;
+  const NavigationLink = enableOnePageMode ? 'a' : Link;
 
   const effectiveItems = useMemo(() => {
     return itemsByLocale?.[resolvedLocale] || itemsByLocale?.[i18n.defaultLocale] || items;
@@ -60,6 +65,7 @@ export default function Navigation({
       setScrolled(isScrolled);
     };
 
+    handleScroll();
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
@@ -83,9 +89,15 @@ export default function Navigation({
           }
         });
 
-        const firstVisible = effectiveItems.find(
-          (item) => item.type === 'page' && visibleSections.current.has(item.target)
+        const visibleItems = effectiveItems.filter(
+          (item) => isSectionItem(item) && visibleSections.current.has(item.target)
         );
+        const firstVisible = visibleItems.find((item) => {
+          const element = document.getElementById(item.target);
+          return !visibleItems.some((other) =>
+            other.target !== item.target && element?.contains(document.getElementById(other.target))
+          );
+        });
         if (firstVisible) {
           setActiveHash(firstVisible.target === 'about' ? '' : `#${firstVisible.target}`);
         }
@@ -100,7 +112,7 @@ export default function Navigation({
       const observer = new IntersectionObserver(observerCallback, observerOptions);
 
       effectiveItems.forEach((item) => {
-        if (item.type === 'page') {
+        if (isSectionItem(item)) {
           const element = document.getElementById(item.target);
           if (element) observer.observe(element);
         }
@@ -113,18 +125,51 @@ export default function Navigation({
     }
   }, [enableOnePageMode, effectiveItems]);
 
-  const isDesktopItemActive = (item: SiteConfig['navigation'][number]) =>
-    enableOnePageMode
+  const isItemActive = (item: SiteConfig['navigation'][number]) =>
+    enableOnePageMode && isSectionItem(item)
       ? activeHash === `#${item.target}` || (!activeHash && item.target === 'about')
       : (item.href === '/'
         ? pathname === '/'
         : pathname.startsWith(item.href));
 
-  const getDesktopItemHref = (item: SiteConfig['navigation'][number]) =>
-    enableOnePageMode ? `/#${item.target}` : item.href;
+  const getItemHref = (item: SiteConfig['navigation'][number]) =>
+    enableOnePageMode && isSectionItem(item) ? `/#${item.target}` : item.href;
 
-  const activeItem = effectiveItems.find((item) => isDesktopItemActive(item)) ?? null;
-  const activeHref = activeItem ? getDesktopItemHref(activeItem) : null;
+  const handleMobileSectionClick = (
+    event: MouseEvent<HTMLAnchorElement>,
+    item: SiteConfig['navigation'][number],
+    closeMenu: () => void,
+  ) => {
+    if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) {
+      return;
+    }
+
+    const section = enableOnePageMode && isSectionItem(item) && pathname === '/'
+      ? document.getElementById(item.target)
+      : null;
+
+    closeMenu();
+    if (!section) {
+      return;
+    }
+
+    event.preventDefault();
+    const hash = `#${item.target}`;
+    if (window.location.hash !== hash) {
+      window.history.pushState(window.history.state, '', getItemHref(item));
+    }
+    setActiveHash(hash);
+
+    window.requestAnimationFrame(() => {
+      section.scrollIntoView({
+        block: 'start',
+        behavior: 'instant',
+      });
+    });
+  };
+
+  const activeItem = effectiveItems.find((item) => isItemActive(item)) ?? null;
+  const activeHref = activeItem ? getItemHref(activeItem) : null;
   const indicatorHref = hoveredHref ?? activeHref;
 
   const measureIndicator = useCallback(() => {
@@ -159,7 +204,7 @@ export default function Navigation({
 
   return (
     <Disclosure as="nav" className="fixed top-0 left-0 right-0 z-50">
-      {({ open }) => (
+      {({ open, close }) => (
         <>
           <motion.div
             initial={{ y: -100 }}
@@ -179,12 +224,12 @@ export default function Navigation({
                   whileTap={{ scale: 0.95 }}
                   className="flex-shrink-0"
                 >
-                  <Link
-                    href="/"
+                  <NavigationLink
+                    href={enableOnePageMode ? '/#about' : '/'}
                     className="text-xl lg:text-2xl font-serif font-semibold text-primary hover:text-accent transition-colors duration-200"
                   >
                     {effectiveSiteTitle}
-                  </Link>
+                  </NavigationLink>
                 </motion.div>
 
                 <div className="hidden lg:block">
@@ -217,16 +262,16 @@ export default function Navigation({
                         />
                       )}
                       {effectiveItems.map((item) => {
-                        const isActive = isDesktopItemActive(item);
-                        const href = getDesktopItemHref(item);
+                        const isActive = isItemActive(item);
+                        const href = getItemHref(item);
 
                         return (
-                          <Link
+                          <NavigationLink
                             key={item.target}
                             href={href}
                             data-nav-href={href}
-                            prefetch={true}
-                            onClick={() => enableOnePageMode && setActiveHash(`#${item.target}`)}
+                            aria-current={isActive ? 'location' : undefined}
+                            onClick={() => enableOnePageMode && isSectionItem(item) && setActiveHash(`#${item.target}`)}
                             onMouseEnter={() => setHoveredHref(href)}
                             className={cn(
                               'relative px-3 py-2 text-sm font-medium rounded-lg transition-colors duration-150',
@@ -238,7 +283,7 @@ export default function Navigation({
                             )}
                           >
                             {item.title}
-                          </Link>
+                          </NavigationLink>
                         );
                       })}
                     </div>
@@ -280,15 +325,8 @@ export default function Navigation({
                 >
                   <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
                     {effectiveItems.map((item, index) => {
-                      const isActive = enableOnePageMode
-                        ? (item.href === '/' ? pathname === '/' && !activeHash : activeHash === `#${item.target}`)
-                        : (item.href === '/'
-                          ? pathname === '/'
-                          : pathname.startsWith(item.href));
-
-                      const href = enableOnePageMode
-                        ? (item.href === '/' ? '/' : `/#${item.target}`)
-                        : item.href;
+                      const isActive = isItemActive(item);
+                      const href = getItemHref(item);
 
                       return (
                         <motion.div
@@ -297,11 +335,10 @@ export default function Navigation({
                           animate={{ opacity: 1, x: 0 }}
                           transition={{ delay: index * 0.1 }}
                         >
-                          <Disclosure.Button
-                            as={Link}
+                          <NavigationLink
                             href={href}
-                            prefetch={true}
-                            onClick={() => enableOnePageMode && setActiveHash(item.href === '/' ? '' : `#${item.target}`)}
+                            aria-current={isActive ? 'location' : undefined}
+                            onClick={(event) => handleMobileSectionClick(event, item, close)}
                             className={cn(
                               'block px-3 py-2 rounded-md text-base font-medium transition-all duration-200',
                               isActive
@@ -310,7 +347,7 @@ export default function Navigation({
                             )}
                           >
                             {item.title}
-                          </Disclosure.Button>
+                          </NavigationLink>
                         </motion.div>
                       );
                     })}
