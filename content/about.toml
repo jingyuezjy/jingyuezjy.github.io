@@ -20,7 +20,7 @@ type = "publications"
 title = "Selected Publications & Projects"
 source = "projects.md"
 filter = "selected"
-limit = 2
+limit = 3
 
 # News is temporarily hidden; uncomment this block to restore it.
 # [[sections]]
